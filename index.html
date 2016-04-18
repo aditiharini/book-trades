@@ -1,0 +1,27 @@
+<html>
+
+<head>
+    <script src="jquery-1.12.0.min.js"></script>
+</head>
+
+<body>
+    <div class="search">
+        <form action/>
+        <input type="text" name="search" id="searchBar" placeword="Search..." />
+        <input type="button" value="Go">
+        </form>
+    </div>
+    <script>
+        $(document).ready(function() {
+                    $("button").click(function() {
+                            $.post("https://first-website-aditiharini.c9users.io/search", {
+                                    query: $(searchBar.val()
+                                    };
+
+                                    function(data) {});
+                            });
+                    });
+    </script>
+</body>
+
+</html>

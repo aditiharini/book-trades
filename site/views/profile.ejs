@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Node Authentication</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <style>
+        body {
+            padding-top: 80px;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="page-header text-center">
+            <h1>Profile Page</h1>
+        </div>
+                
+        <div class="list-group" style="width:300px; float:left">
+  <a class="list-group-item active" href="/profile"><i class="fa fa-home fa-fw"></i>&nbsp; Profile</a>
+  <a class="list-group-item" href="/your-books"><i class="fa fa-book fa-fw"></i>&nbsp; Your Books</a>
+  <a class="list-group-item" href="your-trades"><i class="fa fa-pencil fa-fw"></i>&nbsp; Your Trades</a>
+  <a class="list-group-item" href="/logout"><i class="fa fa-cog fa-fw"></i>&nbsp; Logout</a>
+</div>
+
+        <div class="row">
+
+            <!-- LOCAL INFORMATION -->
+            <div class="col-sm-6">
+                <div class="well" >
+                    <a href="/your-books"><h3><span class="fa fa-book"></span> Your Books</h3></a>
+
+                    <p>Upload new books and view/modify books you've already uploaded
+                    </p>
+
+                </div>
+                    <div class="well"  >
+                    <a href="/your-trades"><h3><span class="fa fa-pencil"></span> Your Trades</h3></a>
+
+                    <p>Look for books and propose/manage your trades
+                    </p>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</body>
+
+</html>

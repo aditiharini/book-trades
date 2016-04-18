@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Your Books</title>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+	<!-- load bootstrap css -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+	<!-- load fontawesome -->
+	<style>
+		body {
+			padding-top: 80px;
+		}
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+</head>
+
+<body>
+	<div class="container">
+		     <div class="page-header text-center">
+            <h1> Your Books</h1>
+        </div>
+        <div class="list-group" style="width:300px; float:left">
+  <a class="list-group-item" href="/profile"><i class="fa fa-home fa-fw"></i>&nbsp; Profile</a>
+  <a class="list-group-item active" href="/your-books"><i class="fa fa-book fa-fw"></i>&nbsp; Your Books</a>
+  <a class="list-group-item" href="your-trades"><i class="fa fa-pencil fa-fw"></i>&nbsp; Your Trades</a>
+  <a class="list-group-item" href="/logout"><i class="fa fa-cog fa-fw"></i>&nbsp; Logout</a>
+</div>
+		<div class="row clearfix">
+			<div class="col-md-12 column">
+				<table class="table table-bordered table-hover" style="width:800px; float:right">
+					<thead>
+						<tr>
+							<th class="text-center">
+								ID
+							</th>
+							<th class="text-center">
+								Title
+							</th>
+							<th class="text-center">
+								Author
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% userBooks.forEach(function(book) { %>
+							<tr>
+								<td style="width:50px"><a href='your-books/<%= book._id.valueOf() %>' id='<%= book._id.valueOf() %>'><%=book._id.valueOf()%></a></td>
+								<td style="width:50px">
+									<%=book.title %>
+								</td>
+								<td style="width:50px">
+									<%=book.author %>
+								</td>
+							</tr>
+							<% }); %>
+					</tbody>
+				</table>
+
+			</div>
+		</div>
+		<form class = "form-inline" action="/your-books" method="post" style = "width:800px; float:right">
+			<div class="form-group">
+				<label>Title</label>
+				<input type="text" class="form-control" name="title" placeholder="A Portrait of the Artist as a Young Man">
+			</div>
+			<div class="form-group">
+				<label>Author</label>
+				<input type="text" class="form-control" name="author" placeholder = "James Joyce">
+			</div>
+			<div class="form-group">
+				<label>Description</label>
+				<input type="text" class="form-control" name="description" placeholder = "<3">
+			</div>
+
+			<button type="submit" class="btn btn-success btn-lg">Post New Book</button>
+		</form>
+	</div>
+
+</body>
+
+</html>

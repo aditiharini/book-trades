@@ -1,0 +1,221 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Your Books</title>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+	<!-- load bootstrap css -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+	<!-- load fontawesome -->
+	<style>
+		body {
+			padding-top: 80px;
+		}
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+</head>
+
+<body>
+
+	<div class="container">
+		
+		<div class="page-header text-center">
+			<h1>Your Trades</h1>
+		</div>
+		        
+        <div class="list-group" style="width:300px; float:left">
+  <a class="list-group-item" href="/profile"><i class="fa fa-home fa-fw"></i>&nbsp; Profile</a>
+  <a class="list-group-item" href="/your-books"><i class="fa fa-book fa-fw"></i>&nbsp; Your Books</a>
+  <a class="list-group-item active" href="your-trades"><i class="fa fa-pencil fa-fw"></i>&nbsp; Your Trades</a>
+  <a class="list-group-item" href="/logout"><i class="fa fa-cog fa-fw"></i>&nbsp; Logout</a>
+</div>
+		<div style = "float:right; margin-right:100px">
+		<div class="row clearfix">
+			<div class="col-md-12 column">
+				<!--<h1> Trades Received</h1>-->
+				<table id = "tr" class="table table-bordered table-hover">
+					<thead>
+						<tr class = "danger">
+							<th class="text-center">
+								Book Wanted
+							</th>
+							<th class="text-center">
+								Username
+							</th>
+							<th class="text-center">
+								Status
+							</th>
+
+					</thead>
+					<script> 
+					$( document ).ready(function(){
+						var tradesReceived = <%-JSON.stringify(tradesReceived)%>;
+						$.each(tradesReceived, function(index, trade) {
+							if(trade.tradeStatus=="pending"){
+								console.log(trade);
+								console.log(trade.bookWanted);
+								var $row = $('<tr><td>' + trade.bookWanted.title + '</td><td>' + trade.fromUser.username  + '</td></tr>');
+								var $button1 = $("<button>Accept</button>");
+								$button1.attr('id', 'accepted');
+								$button1.attr("class", "btn btn-success");
+								//$button1.attr("class", "accepted");
+								var $button2= $("<button>Reject</button>");
+								$button2.attr('id', 'rejected');
+								$button2.attr("class", "btn btn-danger");
+								//$button2.attr("class", "rejected");
+								var $cell = $("<td></td>");
+								$button1.appendTo($cell);
+								$button2.appendTo($cell);
+								$('#tr tbody').append($row).find("td:last").after($cell);
+								$button1.add($button2).click(function(){
+									//console.log(this.id);
+								var id=this.id;
+							    $.ajax({
+		                        type:"POST",
+		                        data: {
+		                        	id: "status", 
+		                            buttonId: id,
+		                            tradeUpdated: trade
+		                        },
+		                        success: function(result){
+		                            window.location = "/your-trades";
+		                            console.log(result);
+		            				
+		                        }
+					    	});
+						}) 		}
+						else{
+							var $row = $('<tr><td>' + trade.bookWanted.title + '</td><td>' + trade.fromUser.username  + '</td><td>'+ trade.tradeStatus+ '</td></tr>');
+							$('#tr tbody').append($row);
+							
+						}
+						
+						});
+					});
+					
+					</script>
+					<tbody id = "tbody">
+					</tbody>
+				</table>
+				<!--<h1>Trades Proposed</h1>-->
+				<table id ="tp" class="table table-bordered table-hover">
+					<thead>
+						<tr class="danger">
+							<th class="text-center">
+								Book Wanted
+							</th>
+							<th class="text-center">
+								Owner
+							</th>
+							<th class="text-center">
+								Status
+							</th>
+							<th class="text-center"> 
+								User Email
+							</th>
+								<th class="text-center"> 
+								Remove Trade
+							</th>
+						</tr>
+					</thead>
+					<script> 
+					$( document ).ready(function(tradesProposed){
+						var tradesProposed = <%-JSON.stringify(tradesProposed)%>;
+						$.each(tradesProposed, function(index, trade) {
+							var $row = $('<tr><td>' + trade.bookWanted.title + '</td><td>' + trade.toUser.username + '</td><td>' + trade.tradeStatus  + '</td></tr>');
+								var $button4 = $("<button>Remove Trade</button>");
+								$button4.attr('id', 'remove');
+								$button4.attr("class",'btn btn-danger');
+								var $cell = $("<td></td>");
+								$button4.appendTo($cell);
+								var $newCell= null;
+								if(trade.tradeStatus=="accepted"){
+									$newCell = $("<td>" + trade.fromUser.email + "</td>");
+								}
+								else{
+									$newCell = $("<td> </td>");
+								}
+								$('#tp tbody').append($row).find("td:last").after($cell).after($newCell);
+								$button4.click(function(){
+								var id=this.id;
+							    $.ajax({
+		                        type:"POST",
+		                        data: {
+									id: "remove",
+		                            buttonId: id,
+		                            tradeRemoved: trade
+		                        },
+		                        success: function(result){
+		                            window.location = "/your-trades";
+		            				
+		                        }
+					    	});
+						}) 
+
+						});
+					});
+					
+					</script>
+					<tbody id = "tbody">
+					</tbody>
+				</table>
+				</div>
+				</div>
+				</div>
+				<div class = "clearfix"style="float:left; width:30%">
+					<h2>Search for Books</h2>
+					<input type="text" class="form-control" oninput="showResults()" name="title" id="title">
+	<!--	<button type="submit" class="btn btn-warning btn-lg" onclick="showResults()">Search</button>-->
+	<!--</form>-->
+	<table id="results">
+	    <thead>
+		<tr class = "danger">
+			<!--<th class = "text-center">Title</th>-->
+			<!--<th class = "text-center">Author</th>-->
+			<!--<th class = "text-center">Owner</th>-->
+			<!--<th class = "text-center">Propose Trade</th>-->
+		</tr>
+		</thead>
+		<tbody id = "tbody">
+			<tr></tr>
+		</tbody>
+			<script>
+		function showResults() {
+			$.ajax({
+				type: 'POST',
+				data: {
+					id:"search",
+					title: document.getElementById("title").value
+				},
+				success: function(result) {
+					console.log("got here");
+					$("#results tbody").empty();
+					$.each(result, function(i, item) {
+						var $trHTML = $('<tr><td>'  + item.author + '</td><td>' + item.owner.username  + '</td></tr>');
+						var $title = $("<a><td>" + item.title + "</td></a>");
+						$title.attr("href", "/info/"+item._id);
+						$trHTML.prepend($title); 
+						var $button = $("<button>Propose Trade</button>").click(function(){
+							    $.ajax({
+		                        type:"POST",
+		                        data: {
+		                            id: "proptrade",
+		                            bookWanted: item
+		                        },
+		                        success: function(result){
+		                            window.location = "/your-trades";
+		            				
+		                        }
+					    	});
+						});
+						$button.attr("class", "btn btn-info");
+					    $('#results tbody').append($trHTML).find("td:last").after($button);
+
+					}); 
+				}
+			});
+		}
+	</script>
+		</div>
+</body>
+</html>
